@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.expert.domain.common.annotation.Auth;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.todo.dto.request.TodoSaveRequest;
+import org.example.expert.domain.todo.dto.response.TodoProjectionDto;
 import org.example.expert.domain.todo.dto.response.TodoResponse;
 import org.example.expert.domain.todo.dto.response.TodoSaveResponse;
 import org.example.expert.domain.todo.service.TodoService;
@@ -39,5 +40,17 @@ public class TodoController {
     @GetMapping("/todos/{todoId}")
     public ResponseEntity<TodoResponse> getTodo(@PathVariable long todoId) {
         return ResponseEntity.ok(todoService.getTodo(todoId));
+    }
+
+    @GetMapping("/todossearch")
+    public ResponseEntity<Page<TodoProjectionDto>> getTodosSearch (
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String nickname,
+            @RequestParam(required = false) String startCreatedDate,
+            @RequestParam(required = false) String endCreatedDate
+    ) {
+        return ResponseEntity.ok(todoService.getTodosSearch(page, size, title, nickname, startCreatedDate, endCreatedDate));
     }
 }
